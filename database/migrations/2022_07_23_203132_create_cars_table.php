@@ -18,7 +18,7 @@ class CreateCarsTable extends Migration
             $table->string('model');
             $table->string('brand');
             $table->year('year');
-            $table->bigInteger('price');
+            $table->double('price');
             $table->string('color');
             $table->string('traction');
             $table->string('type');
