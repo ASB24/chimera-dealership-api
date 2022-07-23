@@ -38,7 +38,7 @@ class CarController extends Controller
     {
         $car = Car::all();
         
-        return response()->json(CarController::createJson($car));
+        return response()->json($car);
     }
 
     /**
