@@ -27,7 +27,7 @@ class CreateCarsTable extends Migration
             $table->integer('cylinders')->nullable();
             $table->double('motor_liters')->nullable();
             $table->integer('user_id');
-            $table->timestamp('registered_at');
+            $table->timestamp('registered_at')->useCurrent();
         });
     }
 
