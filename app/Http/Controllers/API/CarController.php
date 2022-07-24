@@ -70,13 +70,10 @@ class CarController extends Controller
             'price' => 'required|numeric',
             'color' => 'required|string',
             'traction' => 'required|string',
-            'motor' => [
-                'type' => 'required|string',
-                'hp' => 'required|integer',
-                'turbo' => 'required|boolean',
-                'cylinders' => 'required|integer',
-                'motor_liters' => 'required|numeric'
-            ],
+            'motor.type' => 'required|string',
+            'motor.hp' => 'required|integer',
+            'motor.turbo' => 'required|boolean',
+            'motor.cylinders' => 'required|integer',
             'user_id' => 'required|integer'
         ]);
 
@@ -146,13 +143,10 @@ class CarController extends Controller
             'price' => 'required|numeric',
             'color' => 'required|string',
             'traction' => 'required|string',
-            'motor' => [
-                'type' => 'required|string',
-                'hp' => 'required|integer',
-                'turbo' => 'required|boolean',
-                'cylinders' => 'required|integer',
-                'motor_liters' => 'required|numeric'
-            ],
+            'motor.type' => 'required|string',
+            'motor.hp' => 'required|integer',
+            'motor.turbo' => 'required|boolean',
+            'motor.cylinders' => 'required|integer',
             'user_id' => 'required|integer'
         ]);
 
