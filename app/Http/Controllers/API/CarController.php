@@ -12,20 +12,21 @@ class CarController extends Controller
 
     public function createJson($car){
         return [
-            'model' => $car->get('model'),
-            'brand' => $car->get('brand'),
-            'year' => $car->get('year'),
-            'price' => $car->get('price'),
-            'color' => $car->get('color'),
-            'traction' => $car->get('traction'),
+            'id' => $car->id,
+            'model' => $car->model,
+            'brand' => $car->brand,
+            'year' => $car->year,
+            'price' => $car->price,
+            'color' => $car->color,
+            'traction' => $car->traction,
             'motor' => [
-                'type' => $car->get('type'),
-                'hp' => $car->get('hp'),
-                'turbo' => $car->get('turbo'),
-                'cylinders' => $car->get('cylinders'),
-                'motor_liters' => $car->get('motor_liters')
+                'type' => $car->type,
+                'hp' => $car->hp,
+                'turbo' => $car->turbo,
+                'cylinders' => $car->cylinders,
+                'motor_liters' => $car->motor_liters,
             ],
-            'user_id' => $car->get('user_id')
+            'user_id' => $car->user_id,
         ];
     }
 
@@ -38,7 +39,10 @@ class CarController extends Controller
     {
         $car = Car::all();
         
-        return response()->json($car);
+        return response([
+            'message' => 'Successfully retrieved cars',
+            'data' => $car
+        ]);
     }
 
     /**
@@ -93,7 +97,10 @@ class CarController extends Controller
 
         $newCar->save();
 
-        return response()->json($newCar);
+        return response([
+            'message' => 'Car registered successfully',
+            'data' => $this->createJson($newCar)
+        ], 201);
     }
 
     /**
@@ -106,7 +113,10 @@ class CarController extends Controller
     {
         $car = Car::findOrFail($id);
 
-        return response()->json(CarController::createJson($car));
+        return response([
+            'message' => 'Car found',
+            'data' => $this->createJson($car)
+        ], 200);
     }
 
     /**
@@ -161,7 +171,10 @@ class CarController extends Controller
         $car->user_id = $request->get('user_id');
         $car->save();
 
-        return response()->json($car);
+        return response([
+            'message' => 'Car updated successfully',
+            'data' => $this->createJson($car)
+        ], 200);
     }
 
     /**
@@ -175,6 +188,8 @@ class CarController extends Controller
         $car = Car::findOrFail($id);
         $car->delete();
 
-        return response()->json($car);
+        return response([
+            'message' => 'Car deleted successfully'
+        ], 200);
     }
 }
