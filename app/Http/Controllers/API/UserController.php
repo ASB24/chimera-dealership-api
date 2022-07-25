@@ -17,7 +17,12 @@ class UserController extends Controller
     public function index()
     {
         $user = User::all();
-        return response()->json($user);
+        return response(
+            [
+                'message' => 'Successfully retrieved users',
+                'data' => $user
+            ]
+        );
     }
 
     /**
@@ -51,7 +56,13 @@ class UserController extends Controller
         ]);
         $newUser->save();
 
-        return response()->json($newUser);
+        return response(
+            [
+                'message' => 'Successfully created user',
+                'data' => $newUser
+            ],
+            201
+        );
     }
 
     /**
@@ -99,7 +110,11 @@ class UserController extends Controller
         $user->admin = $request->get('admin');
         $user->save();
 
-        return response()->json($user);
+        return response(
+            [
+                'message' => 'User updated',
+                'data' => $this->createJson($user)
+            ], 200);
     }
 
     /**
@@ -113,6 +128,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return response()->json($user);
+        return response(
+            [
+                'message' => 'User deleted',
+                'data' => $this->createJson($user)
+            ], 200);
     }
 }
