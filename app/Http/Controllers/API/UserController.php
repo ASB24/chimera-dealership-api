@@ -78,6 +78,34 @@ class UserController extends Controller
     }
 
     /**
+     * Login a user
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request){
+        $request->validate([
+            'username' => 'required|string|min:5',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('username', $request->get('username'))->first();
+        if($user && Hash::check($request->get('password'), $user->password)){
+            return response(
+                [
+                    'message' => 'Successfully logged in',
+                    'isAdmin' => $user->admin,
+                ], 302
+            );
+        }
+        return response(
+            [
+                'message' => 'Invalid credentials'
+            ],
+            401
+        );
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -105,7 +133,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->username = $request->get('username');
-        $user->password = $request->get('password');
+        $user->password = Hash::make($request->get('password'));
         $user->admin = $request->get('admin');
         $user->save();
 
