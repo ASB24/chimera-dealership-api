@@ -46,13 +46,12 @@ class UserController extends Controller
         $request->validate([
             'username' => 'required|string|min:5',
             'password' => 'required|string',
-            'admin' => 'required|boolean',
         ]);
 
         $newUser = new User([
             'username' => $request->get('username'),
             'password' => Hash::make($request->get('password')),
-            'admin' => $request->get('admin'),
+            'admin' => $request->get('admin') ?? false,
         ]);
         $newUser->save();
 
