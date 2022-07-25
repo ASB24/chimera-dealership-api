@@ -40,12 +40,14 @@ class UserController extends Controller
     {
         $request->validate([
             'username' => 'required|string|min:5',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'admin' => 'required|boolean',
         ]);
 
         $newUser = new User([
             'username' => $request->get('username'),
-            'password' => Hash::make($request->get('password'))
+            'password' => Hash::make($request->get('password')),
+            'admin' => $request->get('admin'),
         ]);
         $newUser->save();
 
@@ -87,12 +89,14 @@ class UserController extends Controller
     {
         $request->validate([
             'username' => 'required|string|min:5',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'admin' => 'required|boolean',
         ]);
 
         $user = User::findOrFail($id);
         $user->username = $request->get('username');
         $user->password = $request->get('password');
+        $user->admin = $request->get('admin');
         $user->save();
 
         return response()->json($user);
