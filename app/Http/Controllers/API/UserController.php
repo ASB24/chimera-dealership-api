@@ -20,7 +20,8 @@ class UserController extends Controller
         return response(
             [
                 'message' => 'Successfully retrieved users',
-                'data' => $user
+                'data' => $user,
+                'status' => '200'
             ]
         );
     }
@@ -58,9 +59,9 @@ class UserController extends Controller
         return response(
             [
                 'message' => 'Successfully created user',
-                'data' => $newUser
-            ],
-            201
+                'data' => $newUser,
+                'status' => '201'
+            ]
         );
     }
 
@@ -74,7 +75,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return response()->json($user);
+        return response([
+            'message' => 'Successfully retrieved user',
+            'data' => $user,
+            'status' => '301'
+        ]);
     }
 
     /**
@@ -94,14 +99,15 @@ class UserController extends Controller
                 [
                     'message' => 'Successfully logged in',
                     'isAdmin' => $user->admin,
-                ], 302
+                    'status' => '301'
+                ]
             );
         }
         return response(
             [
-                'message' => 'Invalid credentials'
-            ],
-            401
+                'message' => 'Invalid credentials',
+                'status' => '401'
+            ]
         );
     }
 
@@ -140,8 +146,9 @@ class UserController extends Controller
         return response(
             [
                 'message' => 'User updated',
-                'data' => $this->createJson($user)
-            ], 200);
+                'data' => $this->createJson($user),
+                'status' => '200'
+            ]);
     }
 
     /**
@@ -158,7 +165,8 @@ class UserController extends Controller
         return response(
             [
                 'message' => 'User deleted',
-                'data' => $this->createJson($user)
-            ], 200);
+                'data' => $this->createJson($user),
+                'status' => '200'
+            ]);
     }
 }
