@@ -21,7 +21,7 @@ class UserController extends Controller
             [
                 'message' => 'Successfully retrieved users',
                 'data' => $user,
-                'status' => '200'
+                'statusCode' => '200'
             ]
         );
     }
@@ -60,7 +60,7 @@ class UserController extends Controller
             [
                 'message' => 'Successfully created user',
                 'data' => $newUser,
-                'status' => '201'
+                'statusCode' => '201'
             ]
         );
     }
@@ -78,7 +78,7 @@ class UserController extends Controller
         return response([
             'message' => 'Successfully retrieved user',
             'data' => $user,
-            'status' => '301'
+            'statusCode' => '301'
         ]);
     }
 
@@ -99,14 +99,14 @@ class UserController extends Controller
                 [
                     'message' => 'Successfully logged in',
                     'isAdmin' => $user->admin,
-                    'status' => '301'
+                    'statusCode' => '301'
                 ]
             );
         }
         return response(
             [
                 'message' => 'Invalid credentials',
-                'status' => '401'
+                'statusCode' => '401'
             ]
         );
     }
@@ -147,7 +147,7 @@ class UserController extends Controller
             [
                 'message' => 'User updated',
                 'data' => $this->createJson($user),
-                'status' => '200'
+                'statusCode' => '200'
             ]);
     }
 
@@ -166,7 +166,7 @@ class UserController extends Controller
             [
                 'message' => 'User deleted',
                 'data' => $this->createJson($user),
-                'status' => '200'
+                'statusCode' => '200'
             ]);
     }
 }
