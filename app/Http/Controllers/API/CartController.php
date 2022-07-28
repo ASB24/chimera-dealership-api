@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Car;
+use App\Models\User;
 use App\Http\Controllers\API\CarController;
 
 class CartController extends Controller
@@ -16,12 +18,12 @@ class CartController extends Controller
      */
     public function formatJSON($cart_item)
     {
-        return response()->json([
+        return [
             'car' => CarController::createJson($cart_item->car),
             'client' => $cart_item->client,
-            'seller' => $cart_item->car->seller,
+            'seller' => $cart_item->seller,
             'added_at' => $cart_item->added_at,
-        ]);
+        ];
     }
 
 
@@ -59,18 +61,20 @@ class CartController extends Controller
             'client_id' => $request->get('client_id'),
             'seller_id' => $request->get('seller_id'),
             'car_id' => $request->get('car_id'),
-            'added_at' => now(),
         ]);
 
+        $cart_item_data = $newCartItem;
         $newCartItem->save();
 
-        $cart_item_data = Cart::with(['car', 'client'])->find($newCartItem->id);
+        $cart_item_data->client = User::where('id', $cart_item_data->client_id)->first();
+        $cart_item_data->seller = User::where('id', $cart_item_data->seller_id)->first();
+        $cart_item_data->car = Car::where('id', $cart_item_data->car_id)->first();
+        $cart_item_data->added_at = $newCartItem->created_at;
 
         return response(
             [
                 'message' => 'Successfully added cart item',
                 'data' => $this->formatJSON($cart_item_data),
-                'statusCode' => '200'
             ],
         );
     }
