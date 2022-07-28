@@ -18,7 +18,7 @@ class CreateCarsTable extends Migration
             $table->string('model');
             $table->string('brand');
             $table->year('year');
-            $table->double('price');
+            $table->bigInteger('price');
             $table->string('color');
             $table->string('traction');
             $table->string('type');
@@ -26,7 +26,7 @@ class CreateCarsTable extends Migration
             $table->boolean('turbo');
             $table->integer('cylinders')->nullable();
             $table->double('motor_liters')->nullable();
-            $table->integer('user_id');
+            $table->integer('seller_id');
             $table->timestamps();
         });
     }
