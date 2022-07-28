@@ -24,6 +24,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<int, string>
+     */
+    protected $casts = [
+        'admin' => 'boolean',
+    ];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -31,4 +40,5 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+    
 }
