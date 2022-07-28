@@ -36,8 +36,7 @@ class CartController extends Controller
         return response(
             [
                 'message' => 'Successfully retrieved cart items',
-                'data' => $this->formatJSON($cart),
-                'statusCode' => '200'
+                'data' => $this->formatJSON($cart)
             ],
         );
     }
@@ -90,15 +89,13 @@ class CartController extends Controller
                 [
                     'message' => 'Successfully retrieved cart item',
                     'data' => $this->formatJSON($cart),
-                    'statusCode' => '200'
                 ],
             );
         }
         return response(
             [
                 'message' => 'Cart item not found',
-                'statusCode' => '404'
-            ],
+            ], 404
         );
     }
 
@@ -131,15 +128,13 @@ class CartController extends Controller
                 [
                     'message' => 'Successfully updated cart item',
                     'data' => $this->formatJSON($cart_item_data),
-                    'statusCode' => '200'
                 ],
             );
         }
         return response(
             [
                 'message' => 'Cart item not found',
-                'statusCode' => '404'
-            ],
+            ], 404
         );
     }
 
@@ -157,15 +152,13 @@ class CartController extends Controller
             return response(
                 [
                     'message' => 'Successfully deleted cart item',
-                    'statusCode' => '200'
                 ],
             );
         }
         return response(
             [
                 'message' => 'Cart item not found',
-                'statusCode' => '404'
-            ],
+            ], 404
         );
     }
 }
