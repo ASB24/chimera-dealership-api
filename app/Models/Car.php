@@ -23,4 +23,19 @@ class Car extends Model
         'motor_liters',
         'seller_id'
     ];
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
+    public function getPriceAttribute($value)
+    {
+        return number_format($value, 2, ',', '.');
+    }
+
+    public function getYearAttribute($value)
+    {
+        return date('Y', strtotime($value));
+    }
 }

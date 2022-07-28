@@ -26,7 +26,7 @@ class CreateCarsTable extends Migration
             $table->boolean('turbo');
             $table->integer('cylinders')->nullable();
             $table->double('motor_liters')->nullable();
-            $table->integer('seller_id');
+            $table->integer('seller_id')->index();
             $table->timestamps();
         });
     }

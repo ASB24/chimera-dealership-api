@@ -10,7 +10,7 @@ use Illuminate\Validation\Validator;
 class CarController extends Controller
 {
 
-    public function createJson($car){
+    static public function createJson($car){
         return [
             'id' => $car->id,
             'model' => $car->model,
