@@ -31,7 +31,7 @@ class Car extends Model
 
     public function getPriceAttribute($value)
     {
-        return number_format($value, 2, ',', '.');
+        return number_format($value, 2, '.', ',');
     }
 
     public function getYearAttribute($value)
