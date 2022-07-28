@@ -21,7 +21,6 @@ class UserController extends Controller
             [
                 'message' => 'Successfully retrieved users',
                 'data' => $user,
-                'statusCode' => '200'
             ]
         );
     }
@@ -59,9 +58,8 @@ class UserController extends Controller
         return response(
             [
                 'message' => 'Successfully created user',
-                'data' => $newUser,
-                'statusCode' => '201'
-            ]
+                'data' => $newUser
+            ], 201
         );
     }
 
@@ -77,15 +75,13 @@ class UserController extends Controller
             return response([
                 'message' => 'Successfully retrieved user',
                 'data' => $user->first(),
-                'statusCode' => '301'
             ]);
         }
 
         return response(
             [
                 'message' => 'User not found',
-                'statusCode' => '404'
-            ]
+            ], 404
         );
     }
 
@@ -106,15 +102,13 @@ class UserController extends Controller
                 [
                     'message' => 'Successfully logged in',
                     'isAdmin' => $user->admin,
-                    'statusCode' => '301'
                 ]
             );
         }
         return response(
             [
-                'message' => 'Invalid credentials',
-                'statusCode' => '401'
-            ]
+                'message' => 'Invalid credentials'
+            ], 400
         );
     }
 
@@ -155,16 +149,14 @@ class UserController extends Controller
                 [
                     'message' => 'Successfully updated user',
                     'data' => $user,
-                    'statusCode' => '200'
                 ]
             );
         }
         
         return response(
             [
-                'message' => 'User not found',
-                'statusCode' => '401'
-            ]
+                'message' => 'User not found'
+            ], 404
         );
     }
 
@@ -189,8 +181,7 @@ class UserController extends Controller
         return response(
             [
                 'message' => 'User not found',
-                'statusCode' => '401'
-            ]
+            ], 404
         );
     }
 }

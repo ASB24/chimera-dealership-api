@@ -41,8 +41,7 @@ class CarController extends Controller
         
         return response([
             'message' => 'Successfully retrieved cars',
-            'data' => $car,
-            'status' => '200'
+            'data' => $car
         ]);
     }
 
@@ -57,8 +56,7 @@ class CarController extends Controller
         
         return response([
             'message' => 'Successfully retrieved cars',
-            'data' => $car,
-            'status' => '200'
+            'data' => $car
         ]);
     }
 
@@ -113,9 +111,8 @@ class CarController extends Controller
 
         return response([
             'message' => 'Car registered successfully',
-            'data' => $this->createJson($newCar),
-            'status' => '201'
-        ]);
+            'data' => $this->createJson($newCar)
+        ], 201);
     }
 
     /**
@@ -130,8 +127,7 @@ class CarController extends Controller
 
         return response([
             'message' => 'Car found',
-            'data' => $this->createJson($car),
-            'status' => '200'
+            'data' => $this->createJson($car)
         ]);
     }
 
@@ -186,8 +182,7 @@ class CarController extends Controller
 
         return response([
             'message' => 'Car updated successfully',
-            'data' => $this->createJson($car),
-            'status' => '200'
+            'data' => $this->createJson($car)
         ]);
     }
 
@@ -203,8 +198,7 @@ class CarController extends Controller
         $car->delete();
 
         return response([
-            'message' => 'Car deleted successfully',
-            'status' => '200'
+            'message' => 'Car deleted successfully'
         ]);
     }
 }
