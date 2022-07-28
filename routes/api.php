@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\CarController;
+use App\Http\Controllers\API\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,12 @@ Route::controller(CarController::class)->group(function(){
     Route::post('cars','store');
     Route::put('cars/{id}','update');
     Route::delete('cars/{id}','destroy');
+});
+
+Route::controller(CartController::class)->group(function(){
+    Route::get('carts','index');
+    Route::get('carts/{id}','show');
+    Route::post('carts','store');
+    Route::put('carts/{id}','update');
+    Route::delete('carts/{id}','destroy');
 });
