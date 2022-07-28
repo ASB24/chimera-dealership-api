@@ -73,13 +73,20 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        if($user = User::find($id)){
+            return response([
+                'message' => 'Successfully retrieved user',
+                'data' => $user->first(),
+                'statusCode' => '301'
+            ]);
+        }
 
-        return response([
-            'message' => 'Successfully retrieved user',
-            'data' => $user,
-            'statusCode' => '301'
-        ]);
+        return response(
+            [
+                'message' => 'User not found',
+                'statusCode' => '404'
+            ]
+        );
     }
 
     /**
@@ -134,21 +141,31 @@ class UserController extends Controller
         $request->validate([
             'username' => 'required|string|min:5',
             'password' => 'required|string',
-            'admin' => 'required|boolean',
+            'admin' => 'boolean',
         ]);
 
-        $user = User::findOrFail($id);
-        $user->username = $request->get('username');
-        $user->password = Hash::make($request->get('password'));
-        $user->admin = $request->get('admin');
-        $user->save();
+        if($user = User::find($id)){
+            $user = $user->first();
+            $user->username = $request->get('username');
+            $user->password = Hash::make($request->get('password'));
+            $user->admin = $request->get('admin') ?? false;
+            $user->save();
 
+            return response(
+                [
+                    'message' => 'Successfully updated user',
+                    'data' => $user,
+                    'statusCode' => '200'
+                ]
+            );
+        }
+        
         return response(
             [
-                'message' => 'User updated',
-                'data' => $this->createJson($user),
-                'statusCode' => '200'
-            ]);
+                'message' => 'User not found',
+                'statusCode' => '401'
+            ]
+        );
     }
 
     /**
@@ -159,14 +176,21 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-
+        if($user = User::find($id)){
+            $user = $user->first();
+            $user->delete();
+            return response(
+                [
+                    'message' => 'User deleted',
+                    'statusCode' => '200'
+                ]
+            );
+        }
         return response(
             [
-                'message' => 'User deleted',
-                'data' => $this->createJson($user),
-                'statusCode' => '200'
-            ]);
+                'message' => 'User not found',
+                'statusCode' => '401'
+            ]
+        );
     }
 }
