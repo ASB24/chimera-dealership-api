@@ -47,6 +47,22 @@ class CarController extends Controller
     }
 
     /**
+     * Display a listing of all cars registered by user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexByUser($user_id)
+    {
+        $car = Car::where('user_id', $user_id)->get();
+        
+        return response([
+            'message' => 'Successfully retrieved cars',
+            'data' => $car,
+            'status' => '200'
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
