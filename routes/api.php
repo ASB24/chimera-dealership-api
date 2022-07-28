@@ -28,8 +28,8 @@ Route::controller(UserController::class)->group(function(){
 Route::controller(CarController::class)->group(function(){
     Route::get('cars','index');
     Route::get('cars/list/{id}','indexByUser');
-    Route::post('cars','store');
     Route::get('cars/{id}','show');
+    Route::post('cars','store');
     Route::put('cars/{id}','update');
     Route::delete('cars/{id}','destroy');
 });

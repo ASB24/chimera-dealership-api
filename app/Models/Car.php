@@ -21,6 +21,6 @@ class Car extends Model
         'turbo',
         'cylinders',
         'motor_liters',
-        'user_id'
+        'seller_id'
     ];
 }

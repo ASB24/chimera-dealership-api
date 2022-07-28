@@ -26,7 +26,7 @@ class CarController extends Controller
                 'cylinders' => $car->cylinders,
                 'motor_liters' => $car->motor_liters,
             ],
-            'user_id' => $car->user_id,
+            'seller_id' => $car->seller_id,
         ];
     }
 
@@ -53,7 +53,7 @@ class CarController extends Controller
      */
     public function indexByUser($user_id)
     {
-        $car = Car::where('user_id', $user_id)->get();
+        $car = Car::where('seller_id', $user_id)->get();
         
         return response([
             'message' => 'Successfully retrieved cars',
@@ -91,7 +91,7 @@ class CarController extends Controller
             'motor.hp' => 'required|integer',
             'motor.turbo' => 'required|boolean',
             'motor.cylinders' => 'required|integer',
-            'user_id' => 'required|integer'
+            'seller_id' => 'required|integer'
         ]);
 
         $newCar = new Car([
@@ -106,7 +106,7 @@ class CarController extends Controller
             'turbo' => $request->get('motor')['turbo'],
             'cylinders' => $request->get('motor')['cylinders'],
             'motor_liters' => $request->get('motor')['motor_liters'],
-            'user_id' => $request->get('user_id')
+            'seller_id' => $request->get('seller_id')
         ]);
 
         $newCar->save();
@@ -166,7 +166,7 @@ class CarController extends Controller
             'motor.hp' => 'required|integer',
             'motor.turbo' => 'required|boolean',
             'motor.cylinders' => 'required|integer',
-            'user_id' => 'required|integer'
+            'seller_id' => 'required|integer'
         ]);
 
         $car = Car::findOrFail($id);
@@ -181,7 +181,7 @@ class CarController extends Controller
         $car->turbo = $request->get('motor')['turbo'];
         $car->cylinders = $request->get('motor')['cylinders'];
         $car->motor_liters = $request->get('motor')['motor_liters'];
-        $car->user_id = $request->get('user_id');
+        $car->seller_id = $request->get('seller_id');
         $car->save();
 
         return response([
