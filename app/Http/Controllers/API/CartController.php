@@ -18,6 +18,13 @@ class CartController extends Controller
      */
     public function formatJSON($cart_item)
     {
+        $cart_item_data = $cart_item;
+        $cart_item_data->added_at = $cart_item->created_at;
+
+        $cart_item_data->client = User::where('id', $cart_item_data->client_id)->first();
+        $cart_item_data->seller = User::where('id', $cart_item_data->seller_id)->first();
+        $cart_item_data->car = Car::where('id', $cart_item_data->car_id)->first();
+
         return [
             'car' => CarController::createJson($cart_item->car),
             'client' => $cart_item->client,
