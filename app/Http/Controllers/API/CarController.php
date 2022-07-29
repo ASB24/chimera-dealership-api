@@ -37,11 +37,16 @@ class CarController extends Controller
      */
     public function index()
     {
-        $car = Car::all();
+        $cars = Car::all();
+        $cars_json = [];
+        
+        foreach($cars as $car){
+            array_push($cars_json, $this->createJson($car));
+        }
         
         return response([
             'message' => 'Successfully retrieved cars',
-            'data' => $car
+            'data' => $cars_json
         ]);
     }
 
