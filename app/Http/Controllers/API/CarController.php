@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Validator;
 
 class CarController extends Controller
@@ -13,6 +14,7 @@ class CarController extends Controller
     static public function createJson($car){
         return [
             'id' => $car->id,
+            'image' => $car->image,
             'model' => $car->model,
             'brand' => $car->brand,
             'year' => $car->year,
