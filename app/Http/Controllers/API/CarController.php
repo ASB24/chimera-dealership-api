@@ -86,6 +86,7 @@ class CarController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:10124',
             'model' => 'required|string',
             'brand' => 'required|string',
             'year' => 'required|integer',
@@ -99,7 +100,19 @@ class CarController extends Controller
             'seller_id' => 'required|integer'
         ]);
 
+        $image = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+
+        $upload = Http::withHeaders([
+            'Authorization' => 'Client-ID ' . env('IMGUR_CLIENT_ID'),
+        ])->post('https://api.imgur.com/3/upload', [
+            'image' => $image,
+            'album' => 'mGU6oL1',
+            'name' => str_replace( ' ', '', $request->get('seller_id') . '_' . $request->get('brand') . '_' . $request->get('model') ),
+            'type' => 'base64'
+        ])->json();
+
         $newCar = new Car([
+            'image' => 'https://i.imgur.com/' . $upload['data']['id'] . '.' . $request->file('image')->getClientOriginalExtension(),
             'model' => $request->get('model'),
             'brand' => $request->get('brand'),
             'year' => $request->get('year'),
