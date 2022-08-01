@@ -101,7 +101,11 @@ class UserController extends Controller
             return response(
                 [
                     'message' => 'Successfully logged in',
-                    'isAdmin' => $user->admin,
+                    'user' => [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'isAdmin' => $user->admin,
+                    ]
                 ]
             );
         }
