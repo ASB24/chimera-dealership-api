@@ -97,6 +97,7 @@ class CarController extends Controller
             'motor.hp' => 'required|integer',
             'motor.turbo' => 'required|boolean',
             'motor.cylinders' => 'required|integer',
+            'motor.motor_liters' => 'required|numeric',
             'seller_id' => 'required|integer'
         ]);
 
@@ -172,6 +173,7 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg|max:10124',
             'model' => 'required|string',
             'brand' => 'required|string',
             'year' => 'required|integer',
@@ -186,6 +188,7 @@ class CarController extends Controller
         ]);
 
         $car = Car::findOrFail($id);
+        $car->image = $request->get('image');
         $car->model = $request->get('model');
         $car->brand = $request->get('brand');
         $car->year = $request->get('year');
