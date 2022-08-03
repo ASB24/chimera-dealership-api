@@ -61,10 +61,7 @@ class CarController extends Controller
     {
         $car = Car::where('seller_id', $user_id)->get();
         
-        return response([
-            'message' => 'Successfully retrieved cars',
-            'data' => $car
-        ]);
+        return response($car);
     }
 
     /**
