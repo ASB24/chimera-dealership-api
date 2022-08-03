@@ -109,7 +109,11 @@ class CarController extends Controller
             'image' => $image,
             'type' => 'base64',
             'album' => 'mGU6oL1' 
-        ]);
+        ])->onError(function ($response) {
+            return response([
+                'message' => 'Error uploading image'
+            ], 500);
+        });
 
         $newCar = new Car([
             'image' => $upload->json()['data']['link'],
@@ -127,12 +131,16 @@ class CarController extends Controller
             'seller_id' => $request->get('seller_id')
         ]);
 
-        $newCar->save();
-
-        return response([
-            'message' => 'Car registered successfully',
-            'data' => $this->createJson($newCar)
-        ], 201);
+        if($newCar->save()){
+            return response([
+                'message' => 'Successfully created car',
+                'data' => $this->createJson($newCar)
+            ]);
+        }else{
+            return response([
+                'message' => 'Error creating car'
+            ], 500);
+        }
     }
 
     /**
@@ -143,12 +151,16 @@ class CarController extends Controller
      */
     public function show($id)
     {
-        $car = Car::findOrFail($id);
-
-        return response([
-            'message' => 'Car found',
-            'data' => $this->createJson($car)
-        ]);
+        if($car = Car::find($id)){
+            return response([
+                'message' => 'Successfully retrieved car',
+                'data' => $this->createJson($car)
+            ]);
+        }else{
+            return response([
+                'message' => 'Car not found'
+            ], 404);
+        }
     }
 
     /**
@@ -186,26 +198,38 @@ class CarController extends Controller
             'seller_id' => 'required|integer'
         ]);
 
-        $car = Car::findOrFail($id);
-        $car->image = $request->get('image');
-        $car->model = $request->get('model');
-        $car->brand = $request->get('brand');
-        $car->year = $request->get('year');
-        $car->price = $request->get('price');
-        $car->color = $request->get('color');
-        $car->traction = $request->get('traction');
-        $car->type = $request->get('motor')['type'];
-        $car->hp = $request->get('motor')['hp'];
-        $car->turbo = $request->get('motor')['turbo'];
-        $car->cylinders = $request->get('motor')['cylinders'];
-        $car->motor_liters = $request->get('motor')['motor_liters'];
-        $car->seller_id = $request->get('seller_id');
-        $car->save();
+        if($car = Car::find($id)){
+            $car->image = $request->get('image');
+            $car->model = $request->get('model');
+            $car->brand = $request->get('brand');
+            $car->year = $request->get('year');
+            $car->price = $request->get('price');
+            $car->color = $request->get('color');
+            $car->traction = $request->get('traction');
+            $car->type = $request->get('motor')['type'];
+            $car->hp = $request->get('motor')['hp'];
+            $car->turbo = $request->get('motor')['turbo'];
+            $car->cylinders = $request->get('motor')['cylinders'];
+            $car->motor_liters = $request->get('motor')['motor_liters'];
+            $car->seller_id = $request->get('seller_id');
+        }else{
+            return response([
+                'message' => 'Car not found',
+                'data' => $car
+            ], 404);
+        }
 
-        return response([
-            'message' => 'Car updated successfully',
-            'data' => $this->createJson($car)
-        ]);
+        if($car->save()){
+            return response([
+                'message' => 'Successfully updated car',
+                'data' => $this->createJson($car)
+            ]);
+        }else{
+            return response([
+                'message' => 'Error updating car',
+                'data' => $car
+            ], 500);
+        }
     }
 
     /**
@@ -216,11 +240,22 @@ class CarController extends Controller
      */
     public function destroy($id)
     {
-        $car = Car::findOrFail($id);
-        $car->delete();
-
-        return response([
-            'message' => 'Car deleted successfully'
-        ]);
+        if($car = Car::find($id)){
+            if($car->delete()){
+                return response([
+                    'message' => 'Successfully deleted car',
+                    'data' => $this->createJson($car)
+                ]);
+            }else{
+                return response([
+                    'message' => 'Error deleting car',
+                    'data' => $car
+                ], 500);
+            }
+        }else{
+            return response([
+                'message' => 'Car not found',
+            ], 404);
+        }
     }
 }
