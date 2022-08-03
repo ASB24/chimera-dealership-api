@@ -146,7 +146,9 @@ class UserController extends Controller
         if($user = User::find($id)){
             $user = $user->first();
             $user->username = $request->get('username') ?? $user->username;
-            $user->password = Hash::make($request->get('password')) ?? $user->password;
+            if($request->get('password')){
+                $user->password = Hash::make($request->get('password'));
+            }
             $user->admin = $request->get('admin') ?? $user->admin ?? false;
             $user->save();
 
