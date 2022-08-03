@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Car;
 
 class UserController extends Controller
 {
@@ -174,6 +175,12 @@ class UserController extends Controller
     {
         if($user = User::find($id)){
             $user = $user->first();
+
+            $car = Car::where('seller_id', $user->id)->get();
+            foreach($car as $c){
+                $c->delete();
+            }
+
             $user->delete();
             return response(
                 [
