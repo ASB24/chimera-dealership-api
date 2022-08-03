@@ -75,7 +75,7 @@ class UserController extends Controller
         if($user = User::find($id)){
             return response([
                 'message' => 'Successfully retrieved user',
-                'data' => $user->first(),
+                'data' => $user,
             ]);
         }
 
@@ -144,7 +144,6 @@ class UserController extends Controller
         ]);
 
         if($user = User::find($id)){
-            $user = $user->first();
             $user->username = $request->get('username') ?? $user->username;
             if($request->get('password')){
                 $user->password = Hash::make($request->get('password'));
@@ -176,7 +175,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         if($user = User::find($id)){
-            $user = $user->first();
+            $user = $user;
 
             $car = Car::where('seller_id', $user->id)->get();
             foreach($car as $c){
