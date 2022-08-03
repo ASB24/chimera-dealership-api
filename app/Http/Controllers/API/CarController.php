@@ -85,7 +85,7 @@ class CarController extends Controller
     {
         
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:10124',
+            'image' => 'required|string',
             'model' => 'required|string',
             'brand' => 'required|string',
             'year' => 'required|integer',
@@ -100,13 +100,11 @@ class CarController extends Controller
             'seller_id' => 'required|integer'
         ]);
 
-        $image = base64_encode(file_get_contents($request->image));
-
         //Make a Guzzle request to https://api.imgur.com/3/image to upload the image encoded in base64 and return the image link
         $upload = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('IMGUR_ACCESS_TOKEN'),
         ])->post('https://api.imgur.com/3/image', [
-            'image' => $image,
+            'image' => $request->get('image'),
             'type' => 'base64',
             'album' => 'mGU6oL1' 
         ])->onError(function ($response) {
@@ -184,7 +182,7 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg|max:10124',
+            'image' => 'required|string',
             'model' => 'required|string',
             'brand' => 'required|string',
             'year' => 'required|integer',
@@ -198,8 +196,20 @@ class CarController extends Controller
             'seller_id' => 'required|integer'
         ]);
 
+        $upload = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('IMGUR_ACCESS_TOKEN'),
+        ])->post('https://api.imgur.com/3/image', [
+            'image' => $request->image,
+            'type' => 'base64',
+            'album' => 'mGU6oL1' 
+        ])->onError(function ($response) {
+            return response([
+                'message' => 'Error uploading image'
+            ], 500);
+        });
+
         if($car = Car::find($id)){
-            $car->image = $request->get('image');
+            $car->image = $upload->json()['data']['link'];
             $car->model = $request->get('model');
             $car->brand = $request->get('brand');
             $car->year = $request->get('year');
@@ -246,16 +256,18 @@ class CarController extends Controller
                     'message' => 'Successfully deleted car',
                     'data' => $this->createJson($car)
                 ]);
-            }else{
-                return response([
-                    'message' => 'Error deleting car',
-                    'data' => $car
-                ], 500);
             }
-        }else{
+            
             return response([
-                'message' => 'Car not found',
-            ], 404);
+                'message' => 'Error deleting car',
+                'data' => $car
+            ], 500);
+            
         }
+
+        return response([
+            'message' => 'Car not found',
+        ], 404);
+        
     }
 }
