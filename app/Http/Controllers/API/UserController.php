@@ -137,16 +137,16 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'username' => 'required|string|min:5',
-            'password' => 'required|string',
-            'admin' => 'boolean',
+            'username' => 'string|min:5' ?? null,
+            'password' => 'string' ?? null,
+            'admin' => 'boolean' ?? null,
         ]);
 
         if($user = User::find($id)){
             $user = $user->first();
-            $user->username = $request->get('username');
-            $user->password = Hash::make($request->get('password'));
-            $user->admin = $request->get('admin') ?? false;
+            $user->username = $request->get('username') ?? $user->username;
+            $user->password = Hash::make($request->get('password')) ?? $user->password;
+            $user->admin = $request->get('admin') ?? $user->admin ?? false;
             $user->save();
 
             return response(
