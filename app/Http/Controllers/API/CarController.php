@@ -7,6 +7,7 @@ use App\Models\Car;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Validator;
+use GuzzleHttp\Client;
 
 class CarController extends Controller
 {
@@ -82,6 +83,7 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg|max:10124',
             'model' => 'required|string',
@@ -98,19 +100,19 @@ class CarController extends Controller
             'seller_id' => 'required|integer'
         ]);
 
-        $image = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+        $image = base64_encode(file_get_contents($request->image));
 
+        //Make a Guzzle request to https://api.imgur.com/3/image to upload the image encoded in base64 and return the image link
         $upload = Http::withHeaders([
-            'Authorization' => 'Client-ID ' . env('IMGUR_CLIENT_ID'),
-        ])->post('https://api.imgur.com/3/upload', [
+            'Authorization' => 'Bearer ' . env('IMGUR_ACCESS_TOKEN'),
+        ])->post('https://api.imgur.com/3/image', [
             'image' => $image,
-            'album' => 'mGU6oL1',
-            'name' => str_replace( ' ', '', $request->get('seller_id') . '_' . $request->get('brand') . '_' . $request->get('model') ),
-            'type' => 'base64'
-        ])->json();
+            'type' => 'base64',
+            'album' => 'mGU6oL1' 
+        ]);
 
         $newCar = new Car([
-            'image' => 'https://i.imgur.com/' . $upload['data']['id'] . '.' . $request->file('image')->getClientOriginalExtension(),
+            'image' => $upload->json()['data']['link'],
             'model' => $request->get('model'),
             'brand' => $request->get('brand'),
             'year' => $request->get('year'),
